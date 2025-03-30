@@ -2,6 +2,9 @@ import argparse
 import os
 from PIL import Image
 
+# For checking image size. Should be either 64x32 (Java lagacy), 64x64 (Java) or 128x128 (Bedrock)
+valid_sizes = [(64, 32), (64, 64), (128, 128)]
+
 def rgba_to_hex(rgba):
     """Converts an RGBA tuple (0-255) to an #RRGGBBAA hex string."""
     r, g, b, a = rgba
@@ -34,6 +37,10 @@ def png_to_hex_grid(input_png_path, output_txt_path):
         # Ensure image is in RGBA format to handle transparency consistently
         img = img.convert("RGBA")
         width, height = img.size
+
+        if img.size not in valid_sizes:
+            raise ValueError(f"Image has wrong dimension. Should be one of 64x32 (Java legacy), 64x64 (Java) or 128x128 (Bedrock). Yours is {width}x{height}.")
+
         pixels = img.load()
 
         print(f"Image loaded: {input_png_path} ({width}x{height})")
@@ -84,11 +91,6 @@ def hex_grid_to_png(input_txt_path, output_png_path):
             if expected_width == -1:
                 expected_width = len(row_hex_codes)
             elif len(row_hex_codes) != expected_width:
-                 print(f"Warning: Row {y+1} has {len(row_hex_codes)} columns, expected {expected_width}. Skipping row or image might be distorted.")
-                 # Decide how to handle this - skip row, pad, error out?
-                 # For simplicity, we'll proceed but the output might be wrong.
-                 # A better approach might be to raise an error.
-                 # Let's raise an error for clarity.
                  raise ValueError(f"Inconsistent row length found at row {y+1}. Expected {expected_width}, got {len(row_hex_codes)}.")
 
             grid_data.append(row_hex_codes)
@@ -96,9 +98,8 @@ def hex_grid_to_png(input_txt_path, output_png_path):
         height = len(grid_data)
         width = expected_width
 
-        if height == 0 or width == 0:
-             print("Error: No valid grid data found in the text file.")
-             return
+        if [width, height] not in valid_sizes:
+            raise ValueError(f"HEX data has wrong dimension. Should be one of 64x32 (Java legacy), 64x64 (Java) or 128x128 (Bedrock). Yours is {width}x{height}.")
 
         print(f"Text grid loaded: {input_txt_path} (Detected size: {width}x{height})")
 
