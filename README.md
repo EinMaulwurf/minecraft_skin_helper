@@ -75,7 +75,7 @@ This reads `steve_hex.txt` (which you might have edited manually or with an LLM'
 
 ## Example Skin
 
-An example skin, `steve.png` ([link](https://www.minecraftskins.com/skin/23151178/old-steve/)), is included in this repository for you to test the conversion process.
+An example skin, `steve.png` ([link](https://www.planetminecraft.com/skin/original-steve-skin-5358663/)), is included in this repository for you to test the conversion process.
 
 ## License
 
