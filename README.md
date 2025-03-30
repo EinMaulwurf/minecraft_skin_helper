@@ -62,18 +62,18 @@ The script `skin_editor.py` is run from the command line using `uv run` (or `pyt
 1. **Convert PNG to Text Hex Grid:**
 
 ```bash
-uv run skin_editor.py png2txt -i steve.png -o steve_hex.txt
+uv run skin_editor.py png2txt -i diamond_steve_32.png -o diamond_steve_hex_32.txt
 ```
 
-This reads the example `steve.png` skin and creates `steve_hex.txt` containing the hex codes.
+This reads the example `diamond_steve_32.png` skin and creates `diamond_steve_hex_32.txt` containing the hex codes.
 
 2. **Convert Text Hex Grid back to PNG:**
 
 ```bash
-uv run skin_editor.py txt2png -i steve_hex.txt -o steve_new.png
+uv run skin_editor.py txt2png -i diamond_steve_hex_32_adjusted.txt -o diamond_steve_32_adjusted.png
 ```
 
-This reads `steve_hex.txt` (which you might have edited manually or with an LLM's help) and creates a new skin file `steve_new.png`.
+This reads `diamond_steve_hex_32_adjusted.txt` (which you might have edited manually or with an LLM's help) and creates a new skin file `diamond_steve_32_adjusted.png`.
 
 ## Editing the Text File
 
@@ -88,9 +88,14 @@ An example skin, `diamond_steve_32.png` ([link](https://www.minecraftskins.com/s
 
 Here's my prompt to Gemini 2.5 Pro that generated the purple version shown above:
 ```txt
-I need your help customizing my minecraft skin. I attached it as an PNG. Also, below I will give you the HEX representation of that skin where you can see the color of each pixel. You will give me the HEX representation back and only change the values in it. Make sure to use the `#RRGGBBAA` format. You do not change the number of rows or columns. The result should have the same dimensions!
+I need your help customizing my minecraft skin. I attached it as an PNG. 
+Also, below I will give you the HEX representation of that skin where you can see 
+the color of each pixel. You will give me the HEX representation back and only 
+change the values in it. Make sure to use the `#RRGGBBAA` format. 
+You do not change the number of rows or columns. The result should have the same dimensions!
 
-Currently, the skin has the character wearing a typical diamond minecraft armor. I'd like you to change the color to purple.
+Currently, the skin has the character wearing a typical diamond minecraft armor. 
+I'd like you to change the color to purple.
 
 (and then the HEX representation of the skin)
 ```
