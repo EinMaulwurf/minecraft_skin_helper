@@ -1,2 +1,4 @@
 *.png
 *.txt
+!steve.png
+!steve.txt
