@@ -87,12 +87,12 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
         for y, line in enumerate(lines):
             line = line.strip()
             if not line: # Skip empty lines
-                 continue
+                continue
             row_hex_codes = line.split()
             if expected_width == -1:
                 expected_width = len(row_hex_codes)
             elif len(row_hex_codes) != expected_width:
-                 raise ValueError(f"Inconsistent row length found at row {y+1}. Expected {expected_width}, got {len(row_hex_codes)}.")
+                raise ValueError(f"Inconsistent row length found at row {y+1}. Expected {expected_width}, got {len(row_hex_codes)}.")
 
             grid_data.append(row_hex_codes)
 
@@ -116,10 +116,10 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
                     rgba = hex_to_rgba(hex_code)
                     pixels[x, y] = rgba
                 except IndexError:
-                     # This shouldn't happen with the earlier width check, but as a safeguard
-                     print(f"Error: Index out of bounds at ({x},{y}). Check grid consistency.")
-                     # Fill with a default color like transparent black
-                     pixels[x, y] = (0, 0, 0, 0)
+                    # This shouldn't happen with the earlier width check, but as a safeguard
+                    print(f"Error: Index out of bounds at ({x},{y}). Check grid consistency.")
+                    # Fill with a default color like transparent black
+                    pixels[x, y] = (0, 0, 0, 0)
                 except ValueError as ve:
                     print(f"Error parsing hex code at row {y+1}, column {x+1}: {ve}. Using transparent black.")
                     pixels[x, y] = (0, 0, 0, 0) # Default to transparent black on error
@@ -131,7 +131,7 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
     except FileNotFoundError:
         print(f"Error: Could not find the input file: {input_txt_path}")
     except ValueError as ve:
-         print(f"An error occurred processing the text grid: {ve}")
+        print(f"An error occurred processing the text grid: {ve}")
     except Exception as e:
         print(f"An error occurred during Text to PNG conversion: {e}")
 
