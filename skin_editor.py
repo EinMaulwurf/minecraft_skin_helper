@@ -1,16 +1,17 @@
 import argparse
 import os
 from PIL import Image
+from typing import Tuple
 
 # For checking image size. Should be either 64x32 (Java lagacy), 64x64 (Java) or 128x128 (Bedrock)
 valid_sizes = [(64, 32), (64, 64), (128, 128)]
 
-def rgba_to_hex(rgba):
+def rgba_to_hex(rgba: Tuple[int, int, int, int]) -> str:
     """Converts an RGBA tuple (0-255) to an #RRGGBBAA hex string."""
     r, g, b, a = rgba
     return f"#{r:02X}{g:02X}{b:02X}{a:02X}"
 
-def hex_to_rgba(hex_code):
+def hex_to_rgba(hex_code) -> Tuple[int, int, int, int]:
     """Converts an #RRGGBBAA hex string to an RGBA tuple (0-255)."""
     if not hex_code.startswith('#') or len(hex_code) != 9:
         raise ValueError(f"Invalid hex code format: {hex_code}. Expected #RRGGBBAA")
@@ -23,7 +24,7 @@ def hex_to_rgba(hex_code):
     except ValueError:
         raise ValueError(f"Invalid characters in hex code: {hex_code}")
 
-def png_to_hex_grid(input_png_path, output_txt_path):
+def png_to_hex_grid(input_png_path: str, output_txt_path: str) -> None:
     """
     Reads a PNG image and writes its pixel colors as a grid of hex codes
     (#RRGGBBAA) to a text file.
@@ -63,7 +64,7 @@ def png_to_hex_grid(input_png_path, output_txt_path):
         print(f"An error occurred during PNG to Text conversion: {e}")
 
 
-def hex_grid_to_png(input_txt_path, output_png_path):
+def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
     """
     Reads a text file containing a grid of hex codes (#RRGGBBAA) and
     creates a PNG image from it.
