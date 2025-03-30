@@ -106,7 +106,7 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
         height = len(grid_data)
         width = expected_width
 
-        if [width, height] not in valid_sizes:
+        if (width, height) not in valid_sizes:
             raise ValueError(
                 f"HEX data has wrong dimension. Should be one of 64x32 (Java legacy), 64x64 (Java) or 128x128 (Bedrock). Yours is {width}x{height}."
             )
