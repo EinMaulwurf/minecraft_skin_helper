@@ -1,4 +1,7 @@
 *.png
 *.txt
-!steve.png
-!steve.txt
+!before_after.png
+!diamond_steve_32.png
+!diamond_steve_32_adjusted.png
+!diamond_steve_hex_32.txt
+!diamond_steve_hex_32_adjusted.txt

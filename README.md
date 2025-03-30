@@ -15,6 +15,9 @@ By converting the skin image into a plain text grid of hex codes:
 
 This allows for precise, pixel-level editing using natural language instructions, leveraging the capabilities of LLMs.
 
+Here's an example of a 64x32 Minecraft skin before an after editing:
+![Before and after](before_after_diamond_steve.jpg)
+
 ## Features
 
 - Converts standard Minecraft skin PNGs (e.g., 64x64) to a `.txt` file.
@@ -22,6 +25,12 @@ This allows for precise, pixel-level editing using natural language instructions
 - Pixels are arranged in the text file exactly as they appear in the image grid.
 - Converts the text grid file back into a valid PNG skin file.
 - Handles transparency correctly.
+
+## Limitations
+
+While the script works for all standard skin resolutions (64x32, 64x64 and 128x128), editing the file with an LLM does work best for the smaller 64x32 skins. In my tests with Gemini 2.5 Pro, it always stopped at 56 rows when generating the hex representation of a 64x64 skin. This is likely due to the token limit of the model, as a 64x64 skin comes out to around 35000 tokens (for Gemini).
+
+If you have a 64x64 skin, you can convert it to HEX and just delete the extra rows, keeping only the first 32 rows.
 
 ## Requirements
 
@@ -73,9 +82,18 @@ This reads `steve_hex.txt` (which you might have edited manually or with an LLM'
 - Each `#RRGGBBAA` code on a line corresponds to a pixel in that row.
 - **Crucial:** When editing, ensure you maintain the exact grid structure. Every line MUST have the same number of hex codes, and the total number of lines must not change. Use only valid 8-digit hexadecimal codes prefixed with `#`. Incorrect formatting will likely cause errors during the `txt2png` conversion.
 
-## Example Skin
+## Example
 
-An example skin, `steve.png` ([link](https://www.planetminecraft.com/skin/original-steve-skin-5358663/)), is included in this repository for you to test the conversion process.
+An example skin, `diamond_steve_32.png` ([link](https://www.minecraftskins.com/skin/15859080/64x32-diamond-armor-steve/)), is included in this repository for you to test the conversion process.
+
+Here's my prompt to Gemini 2.5 Pro that generated the purple version shown above:
+```txt
+I need your help customizing my minecraft skin. I attached it as an PNG. Also, below I will give you the HEX representation of that skin where you can see the color of each pixel. You will give me the HEX representation back and only change the values in it. Make sure to use the `#RRGGBBAA` format. You do not change the number of rows or columns. The result should have the same dimensions!
+
+Currently, the skin has the character wearing a typical diamond minecraft armor. I'd like you to change the color to purple.
+
+(and then the HEX representation of the skin)
+```
 
 ## License
 
