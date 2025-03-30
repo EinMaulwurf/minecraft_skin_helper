@@ -6,14 +6,16 @@ from typing import Tuple
 # For checking image size. Should be either 64x32 (Java lagacy), 64x64 (Java) or 128x128 (Bedrock)
 valid_sizes = [(64, 32), (64, 64), (128, 128)]
 
+
 def rgba_to_hex(rgba: Tuple[int, int, int, int]) -> str:
     """Converts an RGBA tuple (0-255) to an #RRGGBBAA hex string."""
     r, g, b, a = rgba
     return f"#{r:02X}{g:02X}{b:02X}{a:02X}"
 
+
 def hex_to_rgba(hex_code) -> Tuple[int, int, int, int]:
     """Converts an #RRGGBBAA hex string to an RGBA tuple (0-255)."""
-    if not hex_code.startswith('#') or len(hex_code) != 9:
+    if not hex_code.startswith("#") or len(hex_code) != 9:
         raise ValueError(f"Invalid hex code format: {hex_code}. Expected #RRGGBBAA")
     try:
         r = int(hex_code[1:3], 16)
@@ -23,6 +25,7 @@ def hex_to_rgba(hex_code) -> Tuple[int, int, int, int]:
         return (r, g, b, a)
     except ValueError:
         raise ValueError(f"Invalid characters in hex code: {hex_code}")
+
 
 def png_to_hex_grid(input_png_path: str, output_txt_path: str) -> None:
     """
@@ -40,13 +43,15 @@ def png_to_hex_grid(input_png_path: str, output_txt_path: str) -> None:
         width, height = img.size
 
         if img.size not in valid_sizes:
-            raise ValueError(f"Image has wrong dimension. Should be one of 64x32 (Java legacy), 64x64 (Java) or 128x128 (Bedrock). Yours is {width}x{height}.")
+            raise ValueError(
+                f"Image has wrong dimension. Should be one of 64x32 (Java legacy), 64x64 (Java) or 128x128 (Bedrock). Yours is {width}x{height}."
+            )
 
         pixels = img.load()
 
         print(f"Image loaded: {input_png_path} ({width}x{height})")
 
-        with open(output_txt_path, 'w') as f:
+        with open(output_txt_path, "w") as f:
             for y in range(height):
                 row_hex_codes = []
                 for x in range(width):
@@ -74,7 +79,7 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
         return
 
     try:
-        with open(input_txt_path, 'r') as f:
+        with open(input_txt_path, "r") as f:
             lines = f.readlines()
 
         if not lines:
@@ -86,13 +91,15 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
         expected_width = -1
         for y, line in enumerate(lines):
             line = line.strip()
-            if not line: # Skip empty lines
+            if not line:  # Skip empty lines
                 continue
             row_hex_codes = line.split()
             if expected_width == -1:
                 expected_width = len(row_hex_codes)
             elif len(row_hex_codes) != expected_width:
-                raise ValueError(f"Inconsistent row length found at row {y+1}. Expected {expected_width}, got {len(row_hex_codes)}.")
+                raise ValueError(
+                    f"Inconsistent row length found at row {y + 1}. Expected {expected_width}, got {len(row_hex_codes)}."
+                )
 
             grid_data.append(row_hex_codes)
 
@@ -100,12 +107,14 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
         width = expected_width
 
         if [width, height] not in valid_sizes:
-            raise ValueError(f"HEX data has wrong dimension. Should be one of 64x32 (Java legacy), 64x64 (Java) or 128x128 (Bedrock). Yours is {width}x{height}.")
+            raise ValueError(
+                f"HEX data has wrong dimension. Should be one of 64x32 (Java legacy), 64x64 (Java) or 128x128 (Bedrock). Yours is {width}x{height}."
+            )
 
         print(f"Text grid loaded: {input_txt_path} (Detected size: {width}x{height})")
 
         # Create a new RGBA image
-        img = Image.new('RGBA', (width, height))
+        img = Image.new("RGBA", (width, height))
         pixels = img.load()
 
         # Populate the image with pixels from hex codes
@@ -117,13 +126,16 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
                     pixels[x, y] = rgba
                 except IndexError:
                     # This shouldn't happen with the earlier width check, but as a safeguard
-                    print(f"Error: Index out of bounds at ({x},{y}). Check grid consistency.")
+                    print(
+                        f"Error: Index out of bounds at ({x},{y}). Check grid consistency."
+                    )
                     # Fill with a default color like transparent black
                     pixels[x, y] = (0, 0, 0, 0)
                 except ValueError as ve:
-                    print(f"Error parsing hex code at row {y+1}, column {x+1}: {ve}. Using transparent black.")
-                    pixels[x, y] = (0, 0, 0, 0) # Default to transparent black on error
-
+                    print(
+                        f"Error parsing hex code at row {y + 1}, column {x + 1}: {ve}. Using transparent black."
+                    )
+                    pixels[x, y] = (0, 0, 0, 0)  # Default to transparent black on error
 
         img.save(output_png_path, "PNG")
         print(f"PNG image successfully created at: {output_png_path}")
@@ -137,10 +149,26 @@ def hex_grid_to_png(input_txt_path: str, output_png_path: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Convert Minecraft skin PNGs to/from hex code text grids.")
-    parser.add_argument("mode", choices=["png2txt", "txt2png"], help="Conversion mode: png to text or text to png.")
-    parser.add_argument("-i", "--input", required=True, help="Input file path (PNG for png2txt, TXT for txt2png).")
-    parser.add_argument("-o", "--output", required=True, help="Output file path (TXT for png2txt, PNG for txt2png).")
+    parser = argparse.ArgumentParser(
+        description="Convert Minecraft skin PNGs to/from hex code text grids."
+    )
+    parser.add_argument(
+        "mode",
+        choices=["png2txt", "txt2png"],
+        help="Conversion mode: png to text or text to png.",
+    )
+    parser.add_argument(
+        "-i",
+        "--input",
+        required=True,
+        help="Input file path (PNG for png2txt, TXT for txt2png).",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        required=True,
+        help="Output file path (TXT for png2txt, PNG for txt2png).",
+    )
 
     args = parser.parse_args()
 
